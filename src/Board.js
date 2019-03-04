@@ -44,6 +44,21 @@ do {
       return clickCount < 2 && !gameIsWon && !gameIsLost
   }
 
+  flipSquare = (index) => {
+    const { squares } = this.state
+    const newValue = this.squareAssignment(index)
+    squares[index] = newValue
+    this.setState({squares})
+
+  }
+
+  flipAllSquare = (index) => {
+    const { squares } = this.state
+    squares.forEach((square, index) => {
+      this.flipSquare(index)
+    })
+  }
+
   handleSquareClick = (index) => {
     const { squares, clickCount, gameIsLost, gameIsWon } = this.state
 
@@ -53,22 +68,29 @@ do {
 
     if(this.gameIsActive()){
       const newValue = this.squareAssignment(index)
-      squares[index] = newValue
+      const gameIsWon = newValue === "Chest"
+      const gameIsLost = newValue === "Bomb"
+
+      this.flipSquare(index)
 
       this.setState({
-        squares: squares,
         clickCount: clickCount + 1,
-        gameIsWon: newValue === "Chest",
-        gameIsLost: newValue === "Bomb",
+        gameIsWon: gameIsWon,
+        gameIsLost: gameIsLost,
       })
+
+      if(gameIsWon || gameIsLost){
+        this.flipAllSquare()
+      }
     } else if (clickCount >= 2){
       this.setState({gameIsLost: true})
+      this.flipAllSquare()
     }
 
   }
 
   render() {
-    const { squares, gameIsLost, gameIsWon } = this.state
+    const { squares, gameIsLost, gameIsWon, } = this.state
     return (
       <div>
       {gameIsLost &&
@@ -89,6 +111,8 @@ do {
           )
         })}
       </div>
+        <button onClick = {this.flipAllSquare}> Give Up
+        </button>
       </div>
     );
   }
