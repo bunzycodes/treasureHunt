@@ -3,28 +3,36 @@ import Square from './Square'
 import './App.css'
 
 class Board extends Component {
-
   constructor(props){
     super(props)
 
-    const chest = Math.floor(Math.random() * 8)
-
-do {
-    var bomb = Math.floor(Math.random() * 8)
-  } while (bomb === chest)
-
-
     this.state = {
-      squares: ['?', '?', '?',
-                '?', '?', '?',
-                '?', '?', '?'],
-      bombIndex: bomb,
-      chestIndex: chest,
-      clickCount: 0,
-      gameIsLost: false,
-      gameIsWon: false,
+      squares: []
+      }
     }
-  }
+
+    componentDidMount(){
+      this.setupGame()
+    }
+
+    setupGame = () => {
+      const chest = Math.floor(Math.random() * 8)
+      do {
+        var bomb = Math.floor(Math.random() * 8)
+      } while (bomb === chest)
+
+
+      this.setState({
+        squares: ['?', '?', '?',
+                  '?', '?', '?',
+                  '?', '?', '?'],
+        bombIndex: bomb,
+        chestIndex: chest,
+        clickCount: 0,
+        gameIsLost: false,
+        gameIsWon: false,
+      })
+    }
 
 
   squareAssignment = (index) => {
@@ -112,6 +120,8 @@ do {
         })}
       </div>
         <button onClick = {this.flipAllSquare}> Give Up
+        </button>
+        <button onClick = {this.setupGame}> Reset
         </button>
       </div>
     );
