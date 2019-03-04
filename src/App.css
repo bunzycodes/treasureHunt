@@ -2,5 +2,12 @@
   height: 100px;
   width: 100px;
   background-color: grey;
-  margin: 5;
+  margin: 5px;
+  text-align: center;
+  line-height: 100px;
+  display:inline-block;
+}
+
+.board{
+  width: 330px;
 }
